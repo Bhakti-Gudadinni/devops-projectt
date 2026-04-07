@@ -1,0 +1,34 @@
+name: DevOps CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install openai
+
+      - name: Build Docker Image
+        run: docker build -t devops-app .
+
+      - name: Run Application
+        run: docker run devops-app
+
+      - name: AI Self-Healing
+        if: failure()
+        run: |
+          python ai_fix.py > fix.txt
+          cat fix.txt
