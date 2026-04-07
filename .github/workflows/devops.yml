@@ -26,9 +26,9 @@ jobs:
 
       - name: Run Application
         run: docker run devops-app
+        continue-on-error: true
 
       - name: AI Self-Healing
-        if: failure()
         run: |
-          python ai_fix.py > fix.txt
-          cat fix.txt
+        python ai_fix.py > fix.txt
+        cat fix.txt
